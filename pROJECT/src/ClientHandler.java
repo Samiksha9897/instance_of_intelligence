@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.Socket;
 
 
+
 class ClientHandler implements Runnable{
     private Socket clientSocket;
    private BufferedReader in=null;
@@ -34,7 +35,7 @@ in=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
                             System.exit(1);
                             break;
-                        default :
+                            default :
                             System.out.println("Wrong choice choosen");
                             break;
 
@@ -49,27 +50,30 @@ in=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     public void receivefiles(){
 
         try{
-            int bytesread;
+
+            int bytesread,time=10;
             DataInputStream dis=new DataInputStream(clientSocket.getInputStream());
 
-            String FileName=dis.readUTF();
-            OutputStream output=new FileOutputStream(FileName);
+String FileName=dis.readUTF();
+            DataOutputStream output=new DataOutputStream(clientSocket.getOutputStream());
             long size=dis.readLong();
             byte[] buffer=new byte[1024];
-            while(size>0 && (bytesread=dis.read(buffer,0,(int)Math.min(buffer.length,size))) != -1) {
+            while(size>0 && (bytesread=dis.read(buffer,0, (int) Math.min(buffer.length, size))) != -1) {
                 output.write(buffer, 0, bytesread);
                 size -= bytesread;
 
             }
-output.close();
-        dis.close();
-         
-            System.out.println("Data from Client " + counter + " is received! " + clientSocket);
+
+
+
+            System.out.println(FileName + " is received from Client" +counter + " " + clientSocket);
+
+
+
         }
 
         catch(IOException e){
-            System.out.println("Some Error on Client Side");
-
+          e.printStackTrace();
 
 
         }
@@ -77,6 +81,8 @@ output.close();
     }
     public void sendfiles(String fileName){
         try{
+            int second = 0;
+
             File myfile=new File(fileName);
             byte mybyte[]=new byte[(int)fileName.length()];
             FileInputStream fis=new FileInputStream(fileName);
@@ -104,4 +110,9 @@ dis.close();
         }
 
     }
+
+
+
+
 }
+

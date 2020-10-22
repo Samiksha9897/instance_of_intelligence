@@ -22,23 +22,27 @@ public class Client {
             os = new PrintStream(sock.getOutputStream());
 
             try {
+                while(true){
                 switch (Integer.parseInt(selectAction())) {
                     case 1:
                         os.println("1");
                         sendFile();
-                        continue;
+               continue;
                     case 2:
                         os.println("2");
                         System.out.print("Enter file name: ");
                         fileName = stdin.readLine();
                         os.println(fileName);
                         receiveFile(fileName);
-                        continue;
+             continue;
                     case 3:
                         sock.close();
                         System.exit(1);
+break;
+                    default:
+                        System.out.println("Wrong Choice Choosen");
                 }
-            } catch (Exception e) {
+            }} catch (Exception e) {
                 System.err.println("not valid input");
             }
 
@@ -69,23 +73,21 @@ public class Client {
             }
 
             FileInputStream fis = new FileInputStream(myFile);
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            //bis.read(mybytearray, 0, mybytearray.length);
-
-            DataInputStream dis = new DataInputStream(bis);
-            dis.readFully(mybytearray, 0, mybytearray.length);
-
             OutputStream os = sock.getOutputStream();
 
-            //Sending file name and file size to the server
+
             DataOutputStream dos = new DataOutputStream(os);
-            dos.writeUTF(myFile.getName());
-            dos.writeLong(mybytearray.length);
-            dos.write(mybytearray, 0, mybytearray.length);
+dos.writeUTF(myFile.getName());
+            dos.writeLong(myFile.length());
+            System.out.println(myFile.getAbsolutePath());
+            int read=0;
+            while((read =fis.read()) != -1)
+            dos.writeByte(read);
             dos.flush();
+            fis.close();
             System.out.println("File "+fileName+" sent to Server.");
         } catch (Exception e) {
-            System.out.println("Exceptionnnn: "+e);
+       e.printStackTrace();
         }
     }
 
@@ -105,9 +107,9 @@ public class Client {
                 size -= bytesRead;
             }
 
-            output.close();
+
+           output.close();
             in.close();
-            clientData.close();
             System.out.println("File "+fileName+" received from Server.");
         } catch (IOException ex) {
             System.out.println("Not Getting any response from server!"+ex);
