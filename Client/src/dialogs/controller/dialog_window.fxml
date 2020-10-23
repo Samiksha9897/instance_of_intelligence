@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane fx:id="anchorPaneMain" prefHeight="311.0" prefWidth="631.0" style="-fx-background-color: #E96915;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dialogs.controller.DialogWindowController">
+   <children>
+      <AnchorPane fx:id="anchorPaneBody" layoutX="28.0" layoutY="31.0" prefHeight="250.0" prefWidth="572.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <AnchorPane fx:id="anchorPaneMainHeader" prefHeight="42.0" prefWidth="576.0" style="-fx-background-color: #969292;" />
+            <ImageView fx:id="iconImage" fitHeight="88.0" fitWidth="78.0" layoutX="51.0" layoutY="97.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../Downloads/FileTransfer-master/FileTransfer-master/Client/src/resources/img/warning-icon.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="titleLabel" layoutX="188.0" layoutY="62.0" text="Title">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Text fx:id="textText" fontSmoothingType="LCD" layoutX="188.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message" />
+            <Button fx:id="noButton" layoutX="155.0" layoutY="175.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="101.0" text="No" textFill="#969292" />
+            <Button fx:id="yesButton" layoutX="279.0" layoutY="175.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="119.0" text="Yes" />
+            <Button fx:id="okButton" layoutX="435.0" layoutY="175.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="101.0" text="Ok" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
