@@ -11,7 +11,7 @@
     <orderEntry type="module-library" exported="" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/javafx-sdk-11.0.2/lib/javafx.base.jar!/" />
+          <root url="jar://$PATH_TO_FX$/javafx.base.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -20,7 +20,7 @@
     <orderEntry type="module-library" exported="" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/javafx-sdk-11.0.2/lib/javafx.fxml.jar!/" />
+          <root url="jar://$PATH_TO_FX$/javafx.fxml.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -29,11 +29,22 @@
     <orderEntry type="module-library" exported="" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files/javafx-sdk-11.0.2/lib/javafx.controls.jar!/" />
+          <root url="jar://$PATH_TO_FX$/javafx.controls.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" scope="PROVIDED" name="javax.xml.bind:jaxb-api-osgi:2.2.7" level="project" />
+    <orderEntry type="module-library" exported="" scope="PROVIDED">
+      <library>
+        <CLASSES>
+          <root url="jar://$PATH_TO_FX$/javafx.swing.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" exported="" name="client" level="project" />
   </component>
 </module>

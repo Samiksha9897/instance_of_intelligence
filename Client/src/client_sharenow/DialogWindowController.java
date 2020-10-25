@@ -1,4 +1,4 @@
-package dialogs.controller;
+package client_sharenow;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -57,6 +57,17 @@ public class DialogWindowController {
         noButton.setOnMouseClicked(event->STAGE.close());
     }
 
-    public void Initialization
+    public void Initialization(Stage _stage,String title,String text,boolean isQuestion){
+        STAGE = _stage;
+        initComponents();
+        titleLabel.setText(title);
+        textText.setText(text);
+        if(isQuestion){
+            okButton.setVisible(false);
+        }else{
+            yesButton.setVisible(false);
+            noButton.setVisible(false);
+        }
+    }
 
 }
