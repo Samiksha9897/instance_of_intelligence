@@ -15,6 +15,7 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import server.SERVER;
 
+import java.io.File;
 import java.net.ServerSocket;
 
 public class SocketServer extends Application {
@@ -74,6 +75,16 @@ new ServerRunning().start();
     void appendEvent(String str){
         txt1.appendText(str);
 
+    }
+    void Filesdisplay() {
+        int i = 0;
+
+        File directory = new File("C:\\Users\\lenovo\\IdeaProjects\\ShareNow\\Files");
+        String files[] = directory.list();
+        for (i = 0; i < files.length; i++) {
+            String str = files[i];
+            listfiles(str);
+        }
     }
   class ServerRunning extends Thread{
         public void run(){
