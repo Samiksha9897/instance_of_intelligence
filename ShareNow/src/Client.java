@@ -1,6 +1,6 @@
 import java.net.*;
 import java.io.*;
-import java.util.*;
+
 
 public class Client {
 
@@ -8,14 +8,21 @@ public class Client {
     private static String fileName;
     private static BufferedReader stdin;
     private static PrintStream os;
+    private static InputStream input;
+    private static OutputStream output;
 
 
     public static void main(String[] args) throws IOException {
+
+
         boolean runin = true;
         while (true) {
             try {
                 sock = new Socket("localhost", 5000);
                 stdin = new BufferedReader(new InputStreamReader(System.in));
+
+                output = sock.getOutputStream();
+                input = sock.getInputStream();
             } catch (Exception e) {
                 System.err.println("Cannot connect to the server, try again later.");
                 return;
@@ -35,14 +42,16 @@ public class Client {
                             System.out.print("Enter file name: ");
                             fileName = stdin.readLine();
                             os.println(fileName);
-                            receiveFile();
-                            continue;
+                            receiveFile(fileName);
+                            System.out.println("abc");
+                           break;
                         case 3:
                             runin = false;
                             break;
                         default:
                             System.out.println("Wrong Choice Choosen");
                     }
+
                 }
             } catch (Exception e) {
                 System.err.println("not valid input");
@@ -66,8 +75,10 @@ public class Client {
         try {
             System.out.print("Enter file name: ");
             fileName = stdin.readLine();
-            System.out.println("Enter the number of times it should be downloaded");
+            /*System.out.println("Enter the number of times it should be downloaded");
             String nooftimes = stdin.readLine();
+
+             */
             File myFile = new File(fileName);
             byte[] mybytearray = new byte[(int) myFile.length()];
             if (!myFile.exists()) {
@@ -75,49 +86,56 @@ public class Client {
                 return;
             }
 
+
             FileInputStream fis = new FileInputStream(myFile);
-            OutputStream os = sock.getOutputStream();
-
-
-            DataOutputStream dos = new DataOutputStream(os);
+            DataOutputStream dos = new DataOutputStream(output);
             dos.writeUTF(myFile.getName());
+            dos.flush();
             dos.writeLong(myFile.length());
-            dos.writeUTF(nooftimes);
+            dos.flush();
+            System.out.println(myFile.getAbsolutePath());
             int read = 0;
-            while ((read = fis.read()) != -1)
+            while ((read = fis.read()) != -1) {
                 dos.writeByte(read);
+            }
+
 dos.flush();
-
-
             System.out.println("File " + fileName + " sent to Server.");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void receiveFile() {
+    public static void receiveFile(String fileName) {
         try {
-            int bytesRead;
-            try (InputStream in = sock.getInputStream()) {
 
-                DataInputStream clientData = new DataInputStream(in);
 
-                fileName = clientData.readUTF();
-                File file = new File("C:\\Users\\lenovo\\IdeaProjects\\ShareNow\\Client received", fileName);
-                OutputStream output = new FileOutputStream(file);
-                long size = clientData.readLong();
-                byte[] buffer = new byte[1024];
-                while (size > 0 && (bytesRead = clientData.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
-                    output.write(buffer, 0, bytesRead);
-                    size -= bytesRead;
-                }
+            int bytesread, time = 10;
+
+            DataInputStream dis = new DataInputStream(input);
+
+            File file = new File("C:\\Users\\lenovo\\IdeaProjects\\ShareNow\\Client received", fileName);
+            OutputStream output = new FileOutputStream(file);
+            String FileName = dis.readUTF();
+            long size = dis.readLong();
+            byte[] buffer = new byte[1024];
+            System.out.println("abc");
+            while(size>0 && (bytesread=dis.read(buffer,0, (int) Math.min(buffer.length, size))) != -1) {
+                output.write(buffer, 0, bytesread);
+                size -= bytesread;
 
             }
+            output.flush();
 
 
-            System.out.println("File " + fileName + " received from Server.");
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println(FileName + " is received from Client" + sock);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+
         }
 
     }

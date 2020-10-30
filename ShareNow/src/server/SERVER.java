@@ -7,11 +7,8 @@ import java.util.*;
 
 
 public class SERVER {
-    private static ServerSocket server = null;
-    private static Socket clientSocket = null;
-    private SocketServer ss;
-    private boolean keepgoing;
-    private SimpleDateFormat sdf;
+    private final SocketServer ss;
+    private final SimpleDateFormat sdf;
     int counter = 0;
 
 
@@ -33,15 +30,15 @@ public class SERVER {
     }
 
     public void start() {
-        keepgoing = true;
+        boolean keepgoing = true;
 
         try {
-            server = new ServerSocket(port);
+            ServerSocket server = new ServerSocket(port);
             ss.Filesdisplay();
             while (keepgoing) {
                 counter++;
-                clientSocket = server.accept();
-                display("Client " + counter + " is Connected ");
+                Socket clientSocket = server.accept();
+                display("Client " + counter + " is Connected");
 
                 ClientHandler t = new ClientHandler(clientSocket, ss, sdf, counter);
                 a1.add(t);
@@ -64,13 +61,14 @@ public class SERVER {
 
 class ClientHandler extends Thread {
 
-    public int count = 0;
-    private Socket clientSocket;
-    private BufferedReader in = null;
+
+    private final Socket clientSocket;
     SocketServer ss;
     SimpleDateFormat sdf;
-    int counter;
+    int counter,count;
    volatile boolean runin;
+    private static BufferedInputStream input;
+    private static BufferedOutputStream output;
 
     public ClientHandler(Socket clientSocket, SocketServer ss, SimpleDateFormat sdf, int counter) {
 
@@ -79,6 +77,13 @@ class ClientHandler extends Thread {
         this.sdf = sdf;
         this.counter = counter;
         runin=true;
+        count=0;
+        try {
+            input = new BufferedInputStream(clientSocket.getInputStream());
+            output = new BufferedOutputStream(clientSocket.getOutputStream());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void display(String msg) {
@@ -92,7 +97,10 @@ class ClientHandler extends Thread {
     public void run() {
 
         try {
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+
+                    InputStreamReader is=new InputStreamReader(input);
+                    BufferedReader in=new BufferedReader(is);
             String clientoption;
 
             while (runin) {
@@ -106,9 +114,12 @@ class ClientHandler extends Thread {
                         continue;
                     case "2":
                         String fileName;
-                        while ((fileName = in.readLine()) != null) {
+
+                        while ((fileName = in.readLine()) != null){
                             sendfiles(fileName);
+
                         }
+
                         continue;
                     case "3":
                      runin=false;
@@ -125,92 +136,80 @@ class ClientHandler extends Thread {
         }
     }
 
-    public void FilesDisplay(String FileName, long size, String extension) {
+    public void FilesDisplay(String FileName, long size,String extension) {
         File file = new File(FileName);
-        String str = file + " " + "Client " + counter + " " + size + " " + extension;
+        String str = file + " " + "Client " + counter + " " + size+ " " +extension ;
         ss.listfiles(str);
+
     }
 
-    public void receivefiles() {
+    public void receivefiles(){
 
-        try {
+        try{
 
-            int bytesread;
-            String nooftimes;
-            DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
-            DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
-            String FileName = dis.readUTF();
-            nooftimes = dis.readUTF();
+            int bytesread,time=10;
+          DataInputStream dis=new DataInputStream(input);
+            String FileName=dis.readUTF();
             String extension = "";
-            int i = FileName.lastIndexOf('.');
-            if (i >= 0)
-                extension = FileName.substring(i + 1);
-            File directory = new File("C:\\Users\\lenovo\\IdeaProjects\\ShareNow\\Files");
-            String contents[] = directory.list();
-            for (i = 0; i < contents.length; i++) {
-                if (FileName.equals(contents[i])) {
-                    display("File already exists");
-                    return;
-                }
-            }
-            File file = new File("C:\\Users\\lenovo\\IdeaProjects\\ShareNow\\Files", FileName);
-            FileOutputStream fos = new FileOutputStream(file);
-            long size = dis.readLong();
-            byte[] buffer = new byte[1024];
-            while (size > 0 && (bytesread = dis.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
+            int i=FileName.lastIndexOf('.');
+            if(i>= 0)
+                extension=FileName.substring(i+1);
+
+            File file=new File("C:\\Users\\lenovo\\IdeaProjects\\ShareNow\\Files",FileName);
+            FileOutputStream fos=new FileOutputStream(file);
+            long size=dis.readLong();
+            byte[] buffer=new byte[1024];
+            while(size>0 && (bytesread=dis.read(buffer)) != -1) {
                 fos.write(buffer, 0, bytesread);
+
                 size -= bytesread;
 
             }
-            count = count + 1;
+fos.flush();
 
             display(FileName + " is received from Client " + counter);
+            FilesDisplay(FileName,size,extension);
 
-            FilesDisplay(FileName, size, extension);
-            if (count == Integer.parseInt(nooftimes)) {
-                file.delete();
-                display("Oops!! File got deleted");
-            }
 
-        } catch (IOException e) {
+        }
+
+        catch(IOException e){
             e.printStackTrace();
 
 
         }
 
     }
+    public void sendfiles(String fileName){
+        try{
+            int second = 0;
 
-    public void sendfiles(String fileName) {
-        try {
+            File myfile=new File("C:\\Users\\lenovo\\IdeaProjects\\ShareNow\\Files",fileName);
+            byte mybyte[]=new byte[(int)myfile.length()];
 
 
-            File myfile = new File("C:\\Users\\lenovo\\IdeaProjects\\ShareNow\\Files", fileName);
+           FileInputStream fis = new FileInputStream(myfile);
 
-            byte mybyte[] = new byte[(int) myfile.length()];
-            FileInputStream fis = new FileInputStream(myfile);
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            DataInputStream dis = new DataInputStream(bis);
-            OutputStream os = clientSocket.getOutputStream();
-            DataOutputStream dos = new DataOutputStream(os);
-
-            dis.read(mybyte, 0, mybyte.length);
-            if (!myfile.exists()) {
-                display("File does not exists");
-                return;
-            }
+            DataOutputStream dos=new DataOutputStream(output);
             dos.writeUTF(myfile.getName());
+            dos.flush();
             dos.writeLong(mybyte.length);
-            dos.write(mybyte, 0, mybyte.length);
-      dos.flush();
+            dos.flush();
+            int read=0;
+            while((read =fis.read()) != -1)
+                dos.writeByte(read);
 
+dos.flush();
+            display(fileName +" is sent to the Client "+ counter);
 
-            display(fileName + " is sent to the Client " + counter);
-
-        } catch (Exception e) {
-            System.out.println("FileNmaed  does not exist");
+        }
+        catch(Exception e){
+            e.printStackTrace();
         }
 
     }
+
+
 
 
 }

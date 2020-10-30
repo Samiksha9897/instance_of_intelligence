@@ -1,20 +1,27 @@
 package server;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import server.SERVER;
 
+import java.awt.*;
 import java.io.File;
 import java.net.ServerSocket;
 
@@ -58,22 +65,30 @@ public void StartButton(){
         try{
         server=new SERVER(5000,this);
        appendEvent("SERVER STARTED");
-        appendEvent("\nWaiting for Clients\n");
+        appendEvent("\nWAITING FOR CLIENTS...\n");
 new ServerRunning().start();
 }
         catch(Exception e){
-          appendEvent("\nServer Already in use");
+          appendEvent("\nSERVER ALREADY IN USE!");
             return;
         }
 
     }
 
-   void listfiles(String str){
-        list1.getItems().add(str);
-   }
+void listfiles(String str){
+
+             list1.getItems().add(str);
+
+         }
+
+
 
     void appendEvent(String str){
         txt1.appendText(str);
+        Font font=Font.font("Georgia", FontWeight.NORMAL,14);
+
+
+txt1.setFont(font);
 
     }
     void Filesdisplay() {
