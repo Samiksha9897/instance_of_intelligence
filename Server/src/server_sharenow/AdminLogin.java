@@ -28,7 +28,7 @@ public class AdminLogin {
      * @return Appropriate String of type AdminLoginStatus enum
      */
     public String check(){
-        if(adminLoginRequest.getAdminName().equals(Main.adminuser) && adminLoginRequest.getAdminpass().equals(Main.adminpass)){//checking admin Credential
+        if(adminLoginRequest.getAdminName().equals(SocketServer.adminuser) && adminLoginRequest.getAdminpass().equals(SocketServer.adminpass)){//checking admin Credential
             return String.valueOf(AdminLoginStatus.SUCCESS);
         }
         else return String.valueOf(AdminLoginStatus.FAILED);

@@ -16,7 +16,7 @@ public class UserFetch implements Serializable {
         String query="Select * from users;";
         User user;
         try {
-            PreparedStatement preparedStatement=Main.connection.prepareStatement(query);
+            PreparedStatement preparedStatement=SocketServer.connection.prepareStatement(query);
             ResultSet resultSet=preparedStatement.executeQuery();
             extract(userList, resultSet);
         } catch (SQLException e) {
@@ -42,7 +42,7 @@ public class UserFetch implements Serializable {
         String query="Select * from users where First_Name LIKE ? || Last_Name LIKE ?;";
         User user;
         try {
-            PreparedStatement preparedStatement=Main.connection.prepareStatement(query);
+            PreparedStatement preparedStatement=SocketServer.connection.prepareStatement(query);
             preparedStatement.setString(1,"%"+search+"%");
             preparedStatement.setString(2,"%"+search+"%");
             ResultSet resultSet=preparedStatement.executeQuery();

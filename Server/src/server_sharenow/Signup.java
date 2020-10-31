@@ -24,16 +24,16 @@ public class Signup implements Serializable {
     }
     //method to add instance variable values to database
     public String put(){
-        String query1="INSERT INTO AmountSpendUser(UserID) VALUES (?)";
+        //String query1="INSERT INTO AmountSpendUser(UserID) VALUES (?)";
         if(this.contact==null){
-            this.query="INSERT INTO users(UserID,Email,First_Name,Last_Name,Password) VALUES (?,?,?,?,?);";
+            this.query="INSERT INTO user_registration(full_name,username,password,email_id,contact) VALUES (?,?,?,?,?);";
         }
         else {
-            this.query="INSERT INTO users VALUES( ? , ? , ? , ? , ? , ? ,0);";
+            this.query="INSERT INTO user_registration VALUES( ? , ? , ? , ? , ? , ? ,0);";
         }
         try {
-            PreparedStatement stmt=Main.connection.prepareStatement(this.query);
-            PreparedStatement preparedStatement=Main.connection.prepareStatement(query1);
+            PreparedStatement stmt=SocketServer.connection.prepareStatement(this.query);
+            //PreparedStatement preparedStatement=Main.connection.prepareStatement(query1);
             stmt.setString(1,this.fullname);
             stmt.setString(2,this.username);
             stmt.setString(3,this.email);
@@ -45,7 +45,7 @@ public class Signup implements Serializable {
                 stmt.setString(5,this.password);
             }
             stmt.executeUpdate();
-            preparedStatement.executeUpdate();
+            //preparedStatement.executeUpdate();
             return String.valueOf(SignupStatus.SUCCESS);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class User implements Serializable {
     protected String fullname,email,username,contact;
     private String verificationStatus;
+private SERVER s=null;
 
     public void setFullName(String fullname) {
         this.fullname = fullname;
@@ -36,6 +37,7 @@ public class User implements Serializable {
 
     public String getFullName() {
         return fullname;
+
     }
 
     public String getEmail() {

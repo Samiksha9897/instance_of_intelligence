@@ -2,11 +2,16 @@ package server_sharenow;
 
 import java.io.*;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 
 public class HandleClientRequest extends ClientHandler implements Runnable {
     private Socket socket;
     ObjectInputStream ois;//Input Stream of client socket
     ObjectOutputStream oos;//Output Stream of client socket
+
+    public HandleClientRequest(Socket clientSocket, SocketServer ss, SimpleDateFormat sdf, int counter) {
+        super(clientSocket, ss, sdf, counter);
+    }
 
 
     @Override
@@ -53,7 +58,7 @@ public class HandleClientRequest extends ClientHandler implements Runnable {
                     if (!userFetchRequest.getName().equals(""))
                         oos.writeObject(userFetch.fetch(userFetchRequest.getName()));
                     else if (userFetchRequest.getStatus() != -1)
-                        oos.writeObject(userFetch.fetch(userFetchRequest.getStatus()));
+                        oos.writeObject(userFetch.fetch(Integer.toString(userFetchRequest.getStatus())));
                     else
                         oos.writeObject(userFetch.fetch());
                     oos.flush();
