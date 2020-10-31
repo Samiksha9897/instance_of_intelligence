@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="826.0" prefWidth="1081.0" style="-fx-background-color: #E96951;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client_sharenow.UploadFile_Controller">
+   <children>
+      <AnchorPane layoutX="36.0" layoutY="30.0" prefHeight="768.0" prefWidth="1010.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <Button fx:id="upload" layoutX="789.0" layoutY="651.0" mnemonicParsing="false" onAction="#onuploadclicked" prefHeight="54.0" prefWidth="133.0" text="Upload" />
+            <Label layoutX="171.0" layoutY="207.0" text="File Type" />
+            <Label layoutX="171.0" layoutY="273.0" text="Name" />
+            <TextField fx:id="filetype" layoutX="312.0" layoutY="202.0" />
+            <TextField fx:id="name" layoutX="312.0" layoutY="279.0" />
+            <DatePicker fx:id="upload_date" layoutX="303.0" layoutY="351.0" />
+            <Label layoutX="149.0" layoutY="351.0" text="Uploading date" />
+            <Label fx:id="user_email" layoutX="171.0" layoutY="445.0" />
+            <Label layoutX="174.0" layoutY="424.0" text="File Size" />
+            <TextField fx:id="filesize" layoutX="312.0" layoutY="419.0" promptText="file size" />
+            <DatePicker fx:id="expdate" layoutX="303.0" layoutY="492.0" />
+            <Label layoutX="174.0" layoutY="497.0" text="Expire date" />
+            <Label fx:id="status" layoutX="352.0" layoutY="594.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
