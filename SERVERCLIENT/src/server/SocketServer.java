@@ -21,7 +21,7 @@ import java.net.ServerSocket;
 public class SocketServer extends Application {
 
     public Button START;
- public TextArea txt1;
+    public TextArea txt1;
     public ListView list1;
 
     private SERVER server=null;

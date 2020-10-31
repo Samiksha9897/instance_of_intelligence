@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="826.0" prefWidth="1081.0" style="-fx-background-color: #E96951;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client_sharenow.AdminController">
+   <children>
+      <AnchorPane layoutX="51.0" layoutY="54.0" prefHeight="722.0" prefWidth="976.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <Label layoutX="338.0" layoutY="45.0" prefHeight="88.0" prefWidth="376.0" text="Share Now" textFill="#1232e8" wrapText="true">
+               <font>
+                  <Font name="Britannic Bold" size="64.0" />
+               </font>
+            </Label>
+            <Button fx:id="showfiles" layoutX="433.0" layoutY="237.0" mnemonicParsing="false" onAction="#onfilesclicked" text="Files">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="removefile" layoutX="430.0" layoutY="346.0" mnemonicParsing="false" onAction="#onremoveclicked" text="Remove">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="logout" layoutX="429.0" layoutY="633.0" mnemonicParsing="false" onAction="#onlogoutclicked" text="Logout" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

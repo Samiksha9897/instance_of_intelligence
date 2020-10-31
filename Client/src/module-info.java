@@ -1,4 +1,4 @@
-module client {
+module client_sharenow {
     requires javafx.graphics;
     requires javafx.fxml;
     requires javafx.controls;
