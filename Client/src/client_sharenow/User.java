@@ -3,7 +3,7 @@ package client_sharenow;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    protected String fullname,userName,email,contact;
+    protected String fullname,username,email,contact;
     private String verificationStatus;
 
 
@@ -11,8 +11,8 @@ public class User implements Serializable {
         this.fullname = fullname;
     }
 
-    public void setLastName(String userName) {
-        this.userName = userName;
+    public void setUserName(String username) {
+        this.username = username;
     }
 
     public void setEmail(String email) {
@@ -44,8 +44,8 @@ public class User implements Serializable {
         return fullname;
     }
 
-    public String getLastName() {
-        return userName;
+    public String getUserName() {
+        return username;
     }
 
     public String getEmail() {

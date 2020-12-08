@@ -11,7 +11,7 @@ public class LoginRequest implements Serializable {
         this.password=password;
     }
 
-    public String getEmail() {
+    public String getUserName() {
         return username;
     }
 

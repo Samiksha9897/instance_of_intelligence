@@ -67,22 +67,22 @@ public class RegistrationController {
             return;
         }
 
-        if(!email.getText().isEmpty())
-            signupRequest.setEmail(email.getText());
+        if(!username.getText().isEmpty())
+            signupRequest.setUserName(username.getText());
         else{
-            check_label.setText("email required");
+            check_label.setText("username required");
             return;
         }
         if(!fullname.getText().isEmpty())
             signupRequest.setFullName(fullname.getText());
         else{
-            check_label.setText("FirstName required");
+            check_label.setText("FullName required");
             return;
         }
 
         signupRequest.setFullName(fullname.getText());
+        signupRequest.setEmail(email.getText());
         signupRequest.setPhone(contact.getText());
-        //signupRequest.setId(UidGenerator.generateuid());
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {

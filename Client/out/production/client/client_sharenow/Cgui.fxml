@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client_sharenow.ClientGUI">
+    <children>
+        <AnchorPane prefHeight="500.0" prefWidth="500.0" GridPane.rowIndex="1">
+            <children>
+                <Button fx:id="choose" layoutX="302.0" layoutY="419.0" mnemonicParsing="false" onAction="#choose" text="Choose File" />
+                <ListView fx:id="lv" layoutX="592.0" layoutY="74.0" prefHeight="302.0" prefWidth="318.0" />
+                <Button fx:id="send" layoutX="411.0" layoutY="419.0" mnemonicParsing="false" onAction="#send" text="upload" />
+                <Button fx:id="receive" layoutX="488.0" layoutY="419.0" mnemonicParsing="false" onAction="#receive" text="Receive" />
+                <TextField fx:id="t1" layoutX="556.0" layoutY="419.0" onAction="#receive" promptText="Enter File Name" />
+                <TextArea fx:id="txt1" layoutX="69.0" layoutY="74.0" prefHeight="302.0" prefWidth="452.0" />
+            </children>
+        </AnchorPane>
+        <AnchorPane prefHeight="59.0" prefWidth="962.0" style="-fx-background-color: #E96915;">
+            <children>
+                <Label layoutX="14.0" layoutY="10.0" prefHeight="29.0" prefWidth="158.0" text="SHARE NOW" textFill="WHITE">
+                    <font>
+                        <Font name="Georgia" size="24.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <AnchorPane prefHeight="48.0" prefWidth="930.0" style="-fx-background-color: #1155cc;">
+            <children>
+                <Label layoutX="14.0" layoutY="10.0" prefHeight="29.0" prefWidth="182.0" text="SHARE NOW" textFill="WHITE">
+                    <font>
+                        <Font name="Georgia" size="24.0" />
+                    </font>
+                </Label>
+                <Button fx:id="Cstart" layoutX="785.0" layoutY="12.0" mnemonicParsing="false" onAction="#StartButton" prefHeight="25.0" prefWidth="91.0" style="-fx-background-color: #ba000d;" text="START" textFill="#0f0f0d">
+                    <font>
+                        <Font name="Georgia Bold" size="14.0" />
+                    </font>
+                </Button>
+            </children>
+        </AnchorPane>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+        <RowConstraints />
+    </rowConstraints>
+</GridPane>

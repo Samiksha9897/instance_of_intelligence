@@ -107,7 +107,7 @@ public class FirstController {
                 check_label.setText("Server-Side Error");
             else if(check.getVerificationStatus().toUpperCase().equals(String.valueOf(LoginStatus.VERIFIED))){
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("MainWindow.fxml"));
+                fxmlLoader.setLocation(getClass().getResource("Cgui.fxml"));
                 try{
                     fxmlLoader.load();
                 }catch (IOException e){

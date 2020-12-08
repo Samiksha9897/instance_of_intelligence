@@ -6,6 +6,8 @@
       <root url="jar://$PROJECT_DIR$/lib/protobuf-java-3.11.4.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/mysql-connector-java-8.0.21-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

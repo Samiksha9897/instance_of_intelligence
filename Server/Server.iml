@@ -8,6 +8,15 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="mysql:mysql-connector-java:8.0.21" level="project" />
-    <orderEntry type="library" name="mysql-connector" level="project" />
+    <orderEntry type="module-library" exported="" scope="PROVIDED">
+      <library>
+        <CLASSES>
+          <root url="file://$PATH_TO_FX$" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$PATH_TO_FX$" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>

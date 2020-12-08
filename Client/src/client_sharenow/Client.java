@@ -1,121 +1,140 @@
 package client_sharenow;
 
-import java.net.*;
 import java.io.*;
-import java.util.*;
+import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.lang.*;
 
 public class Client {
 
-    private static Socket sock;
-    private static String fileName;
-    private static BufferedReader stdin;
+    public static Socket sock;
+
+    private static int port;
+    private static ClientGUI ss;
+    private static SimpleDateFormat sdf;
+    private static InputStream input;
+    private static OutputStream output;
     private static PrintStream os;
+    private static BufferedReader stdin;
+    public Client(int port) {
+        this(port, null);
+    }
 
-    public static void main(String[] args) throws IOException {
-        while(true) {
-            try {
-                sock = new Socket("localhost", 5000);
-                stdin = new BufferedReader(new InputStreamReader(System.in));
-            } catch (Exception e) {
-                System.err.println("Cannot connect to the server, try again later.");
-                System.exit(1);
-            }
+    public Client(int port,ClientGUI ss) {
 
-            os = new PrintStream(sock.getOutputStream());
+        this.port = port;
+        this.ss = ss;
+        sdf = new SimpleDateFormat("HH:mm:ss");
+    }
 
-            try {
-                while(true){
-                    switch (Integer.parseInt(selectAction())) {
-                        case 1:
-                            os.println("1");
-                            sendFile();
-                            continue;
-                        case 2:
-                            os.println("2");
-                            System.out.print("Enter file name: ");
-                            fileName = stdin.readLine();
-                            os.println(fileName);
-                            receiveFile();
-                            continue;
-                        case 3:
-                            sock.close();
-                            System.exit(1);
-                            break;
-                        default:
-                            System.out.println("Wrong Choice Choosen");
-                    }
-                }} catch (Exception e) {
-                System.err.println("not valid input");
-            }
+    public static void display(String msg) {
+        String time = sdf.format(new Date()) + " " + msg;
+        if (ss == null)
+            System.out.println(time);
+        else
+            ss.appendEvent(time + "\n");
+    }
 
+    public boolean start() {
+
+        try {
+            sock = new Socket("localhost", port);
+            os=new PrintStream(sock.getOutputStream());
+            stdin=new BufferedReader(new InputStreamReader(System.in));
+        } catch (Exception ec) {
+            display("Error connection to server:" + ec);
+            return false;
         }
 
-    }
 
-    public static String selectAction() throws IOException {
-        System.out.println("1. Send file.");
-        System.out.println("2. Receive file.");
-        System.out.println("3. Exit.");
-        System.out.print("\nMake selection: ");
+        display("Connection accepted " + sock.getInetAddress() + ":" + sock.getPort());
 
-        return stdin.readLine();
-    }
-
-
-    public static void sendFile() {
+        // Creating both Data Stream
         try {
-            System.out.print("Enter file name: ");
-            fileName = stdin.readLine();
+            input = new DataInputStream(sock.getInputStream());
+            output = new DataOutputStream(sock.getOutputStream());
 
-            File myFile = new File(fileName);
+
+        } catch (Exception eIO) {
+            display("Exception creating new Input/output Streams: " + eIO);
+            return false;
+        }
+
+        return true;
+    }
+
+    public static void sendFile(String directory,String fileName) {
+        os.println("1");
+        try {
+            /*System.out.println("Enter the number of times it should be downloaded");
+            String nooftimes = stdin.readLine();
+
+             */
+            File myFile = new File("" +directory, String.valueOf(fileName));
+
             byte[] mybytearray = new byte[(int) myFile.length()];
-            if(!myFile.exists()) {
-                System.out.println("File does not exist..");
-                return;
-            }
+
+
 
             FileInputStream fis = new FileInputStream(myFile);
-            OutputStream os = sock.getOutputStream();
-
-
-            DataOutputStream dos = new DataOutputStream(os);
+            DataOutputStream dos = new DataOutputStream(output);
             dos.writeUTF(myFile.getName());
+            dos.flush();
             dos.writeLong(myFile.length());
-            System.out.println(myFile.getAbsolutePath());
-            int read=0;
-            while((read =fis.read()) != -1)
-                dos.writeByte(read);
             dos.flush();
 
-            System.out.println("File "+fileName+" sent to Server.");
+            int read = 0;
+            while ((read = fis.read()) != -1) {
+                dos.writeByte(read);
+            }
+
+            dos.flush();
+            display("File " + fileName + " sent to Server.");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void receiveFile() {
+
+    static void receiveFile(String fileName) throws IOException {
+        os.println("2");
+        System.out.println(fileName);
+        os.println(fileName);
+
+
         try {
-            int bytesRead;
-            InputStream in = sock.getInputStream();
 
-            DataInputStream clientData = new DataInputStream(in);
+            int bytesread, time = 10;
 
-            fileName = clientData.readUTF();
-            File file=new File("C:\\Users\\lenovo\\IdeaProjects\\ShareNow\\client_sharenow.Client received",fileName);
+            DataInputStream dis = new DataInputStream(input);
+
+            File file = new File("C:\\Users\\akanksha sharma\\Desktop", fileName);
             OutputStream output = new FileOutputStream(file);
-            long size = clientData.readLong();
+            String FileName = dis.readUTF();
+            long size = dis.readLong();
             byte[] buffer = new byte[1024];
-            while (size > 0 && (bytesRead = clientData.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
-                output.write(buffer, 0, bytesRead);
-                size -= bytesRead;
+
+            while (size > 0 && (bytesread = dis.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
+                output.write(buffer, 0, bytesread);
+                size -= bytesread;
+
             }
+            output.flush();
 
 
+            display(FileName + " is received from Client");
 
-            System.out.println("File "+fileName+" received from Server.");
-        } catch (IOException ex) {
-            System.out.println("Not Getting any response from server!"+ex);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+
         }
 
     }
+
+
+
 }
