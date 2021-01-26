@@ -38,7 +38,7 @@ public class SocketServer extends Application {
 
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader connectLoader=new FXMLLoader();
-        connectLoader.setLocation(getClass().getResource("/sample.fxml"));
+        connectLoader.setLocation(getClass().getResource("/Mainwindow.fxml"));
         Parent root = connectLoader.load();
         Scene scene = new Scene(root, 964, 701);
 

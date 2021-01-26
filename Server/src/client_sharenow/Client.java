@@ -43,7 +43,7 @@ public class Client {
             os=new PrintStream(sock.getOutputStream());
             stdin=new BufferedReader(new InputStreamReader(System.in));
         } catch (Exception ec) {
-            display("Error connectiong to server:" + ec);
+            display("Error connection to server:" + ec);
             return false;
         }
 
