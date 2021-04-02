@@ -9,10 +9,10 @@ public class Client_Request implements Runnable {
     ObjectOutputStream oos;//Output Stream of client socket
 
     public Client_Request(Socket socket) {
-        this.socket=socket;
+        this.socket = socket;
         try {
-            ois=new ObjectInputStream(socket.getInputStream());
-            oos=new ObjectOutputStream(socket.getOutputStream());
+            ois = new ObjectInputStream(socket.getInputStream());
+            oos = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,17 +24,18 @@ public class Client_Request implements Runnable {
         while (true) {
             try {
                 Object obj;
-                try{
+                try {
                     obj = ois.readObject();
-                }catch (EOFException e){
+                } catch (EOFException e) {
                     System.out.println("Client disconnected");
                     break;
                 } catch (ClassNotFoundException e1) {
                     e1.printStackTrace();
                     break;
                 }
-                //assert obj != null;
+                assert obj != null;
                 String req = obj.toString();
+                System.out.println(req);
                 if (req.equals(String.valueOf(ServerRequest.SIGNUP_REQUEST))) {
                     Signup newsignup = new Signup((SignupRequest) obj);
                     String status = newsignup.put();
@@ -46,6 +47,18 @@ public class Client_Request implements Runnable {
                     User user = login.check();
                     oos.writeObject(user);
                     oos.flush();
+                    System.out.println("d");
+                    try {
+                        // yaha kya kiya ha ? new server kyo ?
+                        //sir server ka thread start krna tha yahan se login k baad
+                        // 5000 port to busy hoga
+                        //toh koi or port se connect karu? yes
+                        Thread s = new Thread(new SERVER(5001, socket));
+                        s.start();
+                        System.out.println("a");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
 
@@ -67,7 +80,8 @@ public class Client_Request implements Runnable {
                     oos.flush();
                 }
 
-            } catch (StreamCorruptedException e){
+            } catch (StreamCorruptedException e) {
+                /*
                 try {
                     ois=new ObjectInputStream(socket.getInputStream());
                     oos=new ObjectOutputStream(socket.getOutputStream());
@@ -76,9 +90,13 @@ public class Client_Request implements Runnable {
                 }
             }catch (IOException e) {
                 e.printStackTrace();
+            }*/
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
+
         }
 
-    }
 
+    }
 }

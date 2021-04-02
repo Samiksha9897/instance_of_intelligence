@@ -11,13 +11,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
+import java.io.*;
 import java.net.Socket;
 
 public class FirstController {
-
+    public static Socket sock;
+    public static InputStream input;
+   public static OutputStream output;
+    public static PrintStream os;
+    public static BufferedReader stdin;
     @FXML
     private Button login;
 
@@ -64,14 +67,15 @@ public class FirstController {
                 Socket socket = new Socket(Main.serverip,Main.portno);
                 Main.socket=socket;
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                 Main.oos = objectOutputStream;
                 objectOutputStream.writeObject(loginRequest);
-                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+                objectOutputStream.flush();
                 Main.ois = objectInputStream;
                 check = (User)objectInputStream.readObject();
                 Main.user=check;
-                Main.socket=socket;
-
+                //Main.socket=socket;
+                System.out.println("login request completed");
             }catch (Exception e){
                 check=new User();
                 check.setVerificationStatus(String.valueOf(LoginStatus.FAILED_FROM_CLIENT));
@@ -93,7 +97,9 @@ public class FirstController {
 //        here the operations are done in a thread so that ui does not become unresponsive.
 
 
-        while (check==null){}
+        while (check==null){
+            System.out.println("check is still null");
+        }
 //while loop so that inside the thread value of check is changed
 
 
@@ -108,17 +114,31 @@ public class FirstController {
             else if(check.getVerificationStatus().toUpperCase().equals(String.valueOf(LoginStatus.VERIFIED))){
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("Cgui.fxml"));
-                try{
+                System.out.println("login completed now setting new scene");
+                try {
+                    sock= Main.socket;
+                    System.out.println("Printstream created");
+                    os=new PrintStream(sock.getOutputStream());
+                    os.println("printing stream");
+                    //stdin=new BufferedReader(new InputStreamReader(System.in));
+                    input = new DataInputStream(sock.getInputStream());
+                    output = new DataOutputStream(sock.getOutputStream());
+                    System.out.println("All streams created");
                     fxmlLoader.load();
-                }catch (IOException e){
-                    e.printStackTrace();
+
+
+                } catch (Exception eIO) {
+                    eIO.printStackTrace();
                 }
+
                 //Controller_products controller = fxmlLoader.getController();
+                System.out.println("getting into file transfer");
+
 
                 Parent p = fxmlLoader.getRoot();
 
                 Stage primaryStage = (Stage) signup.getScene().getWindow();
-                primaryStage.setScene(new Scene(p,1303,961));
+                primaryStage.setScene(new Scene(p,1080,900));
 
             }
         }
@@ -137,7 +157,7 @@ public class FirstController {
         }
         primaryStage.setScene(new Scene(root, 1081, 826));
     }
-    
+
 
 
 }

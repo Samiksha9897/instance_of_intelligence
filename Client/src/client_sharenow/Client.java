@@ -38,20 +38,22 @@ public class Client {
 
     public boolean start() {
 
-        try {
-            sock = new Socket("localhost", port);
+        /*try {
+            sock= Main.socket;
+            System.out.println("Printstream created");
             os=new PrintStream(sock.getOutputStream());
             stdin=new BufferedReader(new InputStreamReader(System.in));
+            os.println("ststart");
         } catch (Exception ec) {
             display("Error connection to server:" + ec);
             return false;
         }
 
-
-        display("Connection accepted " + sock.getInetAddress() + ":" + sock.getPort());
+*/
+        display("Connection accepted " + FirstController.sock.getInetAddress() + ":" + FirstController.sock.getPort());
 
         // Creating both Data Stream
-        try {
+       /* try {
             input = new DataInputStream(sock.getInputStream());
             output = new DataOutputStream(sock.getOutputStream());
 
@@ -60,12 +62,13 @@ public class Client {
             display("Exception creating new Input/output Streams: " + eIO);
             return false;
         }
-
+*/
         return true;
     }
 
     public static void sendFile(String directory,String fileName) {
-        os.println("1");
+
+        FirstController.os.println("1");
         try {
             /*System.out.println("Enter the number of times it should be downloaded");
             String nooftimes = stdin.readLine();
@@ -78,7 +81,7 @@ public class Client {
 
 
             FileInputStream fis = new FileInputStream(myFile);
-            DataOutputStream dos = new DataOutputStream(output);
+            DataOutputStream dos = new DataOutputStream(FirstController.output);
             dos.writeUTF(myFile.getName());
             dos.flush();
             dos.writeLong(myFile.length());
@@ -95,22 +98,23 @@ public class Client {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
 
     static void receiveFile(String fileName) throws IOException {
-        os.println("2");
-        System.out.println(fileName);
-        os.println(fileName);
+        FirstController.os.println("2");
+        FirstController.os.println(fileName);
 
 
         try {
 
             int bytesread, time = 10;
 
-            DataInputStream dis = new DataInputStream(input);
+            DataInputStream dis = new DataInputStream(FirstController.input);
 
-            File file = new File("C:\\Users\\akanksha sharma\\Desktop", fileName);
+            File file = new File("C:\\Users\\akanksha sharma\\Desktop\\Softablitz\\instance_of_intelligence\\client\\files", fileName);
             OutputStream output = new FileOutputStream(file);
             String FileName = dis.readUTF();
             long size = dis.readLong();

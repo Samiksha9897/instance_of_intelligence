@@ -139,7 +139,7 @@ public class ClientGUI extends Application {
             public void run() {
                 File s=new File(t1.getText());
                 try {
-                   Client.receiveFile(s.getName());
+                    Client.receiveFile(s.getName());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -162,7 +162,7 @@ public class ClientGUI extends Application {
                 String fileName = s.getName();
                 String filePath = s.getAbsolutePath();
                 String directory=s.getParent();
-               Client.sendFile(directory,fileName);
+                Client.sendFile(directory,fileName);
             }
         }).start();
 
